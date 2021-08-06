@@ -7,14 +7,24 @@ import { Button, Li, Ul } from 'ui';
 import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
 import { requiredEmail, required } from 'utils/validators';
+import { useAppDispatch } from 'store';
+import { signIn } from 'store/user/actions';
 import { useState } from 'react';
+import { toastr } from 'react-redux-toastr';
 
 const Login = () => {
-  const isLoading = false;
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (values: handleSubmitProps) => {
-    console.log(values);
+    setLoading(true);
+    dispatch(signIn(values)).then(response => {
+      if (response.error) {
+        toastr.error('Error', response.payload as string);
+      }
+      setLoading(false);
+    });
   };
 
   return (
@@ -32,7 +42,7 @@ const Login = () => {
           </Ul>
           <Form
             onSubmit={handleSubmit}
-            render={({ handleSubmit, submitting, pristine, submitError }) => (
+            render={({ handleSubmit, submitting, pristine }) => (
               <form onSubmit={handleSubmit}>
                 <div>
                   <FormItem>
@@ -65,11 +75,10 @@ const Login = () => {
                       )}
                     />
                   </FormItem>
-                  {submitError && { submitError }}
                 </div>
                 <FormFooter>
                   <Field
-                    name="remember"
+                    name="rememberMe"
                     title="Remember"
                     type="checkbox"
                     render={props => <CheckBoxField {...props} />}
@@ -95,7 +104,7 @@ export default Login;
 interface handleSubmitProps {
   email: string;
   password: string;
-  remember: boolean;
+  rememberMe: boolean;
 }
 
 const Wrapper = styled.div`

@@ -5,8 +5,17 @@ import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { Loader } from 'ui';
 import loginBackground from 'public/images/loginBackground.png';
+import { useRouter } from 'next/dist/client/router';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/user/selectors';
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children, loading }) => {
+  const router = useRouter();
+  const user = useSelector(selectUser);
+
+  if (user.isAuthorized) {
+    router.push('/dashboard');
+  }
   return (
     <Root>
       <Head>

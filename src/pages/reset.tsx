@@ -1,47 +1,42 @@
-import { PasswordField, TextField } from 'components';
+import { TextField } from 'components';
 import { Field, Form } from 'react-final-form';
 import AuthLayout from 'layouts/AuthLayout';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
-import { Button, Li, Ul } from 'ui';
-import Link from 'next/link';
+import { Button } from 'ui';
 import { useRouter } from 'next/dist/client/router';
-import { requiredEmail, requiredMinLenght } from 'utils/validators';
-import { signUp } from 'store/user/actions';
-import { toastr } from 'react-redux-toastr';
+import { requiredEmail } from 'utils/validators';
 import { useAppDispatch } from 'store';
+import { resetPassword } from 'store/user/actions';
 import { useState } from 'react';
+import { toastr } from 'react-redux-toastr';
 
-const Login = () => {
+const Reset = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const handleSubmit = (values: handleSubmitProps) => {
     setLoading(true);
-    dispatch(signUp(values)).then(response => {
+    dispatch(resetPassword(values)).then(response => {
       if (response.error) {
         toastr.error('Error', response.payload as string);
+      } else {
+        router.push('/login');
       }
       setLoading(false);
     });
   };
+
   return (
     <AuthLayout>
       <Wrapper>
         <Card>
-          <Title>Welcome to Accelerist</Title>
-          <Ul>
-            <Li className={router.pathname == '/signup' ? 'active' : ''}>
-              <Link href="/signup">Register</Link>
-            </Li>
-            <Li className={router.pathname == '/login' ? 'active' : ''}>
-              <Link href="/login">Login</Link>
-            </Li>
-          </Ul>
+          <Title>Password Reset</Title>
+          <SubTitle>Enter your email to receive instructions on how to reset your password.</SubTitle>
           <Form
             onSubmit={handleSubmit}
-            render={({ handleSubmit, submitting, pristine, submitError }) => (
+            render={({ handleSubmit, submitting, pristine }) => (
               <form onSubmit={handleSubmit}>
                 <div>
                   <FormItem>
@@ -59,29 +54,9 @@ const Login = () => {
                       )}
                     />
                   </FormItem>
-                  <FormItem>
-                    <Field
-                      disable={isLoading}
-                      maxLength={30}
-                      name="password"
-                      placeholder="Password"
-                      validate={requiredMinLenght}
-                      render={props => (
-                        <>
-                          <Label>Password</Label>
-                          <PasswordField {...props} />
-                        </>
-                      )}
-                    />
-                  </FormItem>
-                  {submitError && { submitError }}
                 </div>
-                <Service>
-                  I agree that by clicking <strong>“Registration”</strong> I accept the{' '}
-                  <Link href="/login">Terms Of Service</Link> and <Link href="/login">Privacy Policy</Link>
-                </Service>
                 <Button type="submit" isLoading={isLoading} disabled={submitting || isLoading || pristine}>
-                  Registration
+                  Reset
                 </Button>
               </form>
             )}
@@ -92,11 +67,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Reset;
 
 interface handleSubmitProps {
   email: string;
-  password: string;
 }
 
 const Wrapper = styled.div`
@@ -113,7 +87,15 @@ const Title = styled.h2`
   font-size: 24px;
   line-height: 148%;
   color: ${colors.black};
-  text-align: center;
+`;
+
+const SubTitle = styled.h3`
+  margin: 0;
+  color: ${colors.black};
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 155%;
+  margin-bottom: 30px;
 `;
 
 const Card = styled.div`
@@ -134,25 +116,4 @@ const Label = styled.label`
 
 const FormItem = styled.div`
   margin-bottom: 24px;
-`;
-
-const Service = styled.p`
-  font-size: 12px;
-  text-align: center;
-  line-height: 150%;
-  color: ${colors.darkGray};
-  a {
-    cursor: pointer;
-    transition: all 0.2s ease 0s;
-    font-size: 12px;
-    line-height: 150%;
-    color: ${colors.black};
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  strong {
-    color: ${colors.black};
-    font-weight: 500;
-  }
 `;

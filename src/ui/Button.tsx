@@ -33,6 +33,12 @@ const StyledButtonPrimaryCSS = css`
     background-color: ${colors.lightBlue};
     border: ${colors.lightBlue};
   }
+  &:disabled {
+    background: ${colors.lightBlue3};
+    border-color: ${colors.lightBlue3};
+    color: ${colors.opacityBlue};
+    cursor: no-drop;
+  }
 `;
 
 const StyledButtonSecondaryCSS = css`
