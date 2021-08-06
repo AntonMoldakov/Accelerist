@@ -1,4 +1,4 @@
-import { CheckBoxField, TextField, PasswordField } from 'components';
+import { PasswordField, TextField } from 'components';
 import { Field, Form } from 'react-final-form';
 import AuthLayout from 'layouts/AuthLayout';
 import styled from 'styled-components';
@@ -6,17 +6,13 @@ import { colors } from 'styles/colors';
 import { Button, Li, Ul } from 'ui';
 import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
-import { requiredEmail, required } from 'utils/validators';
-import { useState } from 'react';
+import { requiredEmail, requiredMinLenght } from 'utils/validators';
 
 const Login = () => {
   const isLoading = false;
   const router = useRouter();
 
-  const handleSubmit = (values: handleSubmitProps) => {
-    console.log(values);
-  };
-
+  const handleSubmit = ({ email, password }: handleSubmitProps) => {};
   return (
     <AuthLayout>
       <Wrapper>
@@ -56,7 +52,7 @@ const Login = () => {
                       maxLength={30}
                       name="password"
                       placeholder="Password"
-                      validate={required}
+                      validate={requiredMinLenght}
                       render={props => (
                         <>
                           <Label>Password</Label>
@@ -67,19 +63,12 @@ const Login = () => {
                   </FormItem>
                   {submitError && { submitError }}
                 </div>
-                <FormFooter>
-                  <Field
-                    name="remember"
-                    title="Remember"
-                    type="checkbox"
-                    render={props => <CheckBoxField {...props} />}
-                  />
-                  <Link href="/reset">
-                    <A>Forgot password?</A>
-                  </Link>
-                </FormFooter>
+                <Service>
+                  I agree that by clicking <strong>“Registration”</strong> I accept the{' '}
+                  <Link href="/login">Terms Of Service</Link> and <Link href="/login">Privacy Policy</Link>
+                </Service>
                 <Button type="submit" isLoading={isLoading} disabled={submitting || isLoading || pristine}>
-                  Login
+                  Registration
                 </Button>
               </form>
             )}
@@ -95,7 +84,6 @@ export default Login;
 interface handleSubmitProps {
   email: string;
   password: string;
-  remember: boolean;
 }
 
 const Wrapper = styled.div`
@@ -135,20 +123,23 @@ const FormItem = styled.div`
   margin-bottom: 24px;
 `;
 
-const FormFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const A = styled.a`
-  color: ${colors.darkGray};
-  cursor: pointer;
-  transition: all 0.2s ease 0s;
+const Service = styled.p`
   font-size: 12px;
+  text-align: center;
   line-height: 150%;
-  &:hover {
+  color: ${colors.darkGray};
+  a {
+    cursor: pointer;
+    transition: all 0.2s ease 0s;
+    font-size: 12px;
+    line-height: 150%;
     color: ${colors.black};
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  strong {
+    color: ${colors.black};
+    font-weight: 500;
   }
 `;
