@@ -40,46 +40,54 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, headTitle, p
       <Head>
         <title>{headTitle}</title>
       </Head>
-      <Header>
-        <StyledNav>
-          <Link href="/dashboard">
-            <>
-              <Logo width={46} height={46} />
-              <LogoTitle>ACCELERIST</LogoTitle>
-            </>
-          </Link>
-          {navItems.map(item => (
-            <Link href={item.src} key={item.id}>
-              <A $active={router.route === item.src}>{item.title}</A>
-            </Link>
-          ))}
-        </StyledNav>
-        <UserContainer>
-          {isLoading ? (
-            <Loader size={20} />
-          ) : (
-            <>
-              <Dropdown>
-                <StyledDropdownToggle id="dropdown-basic">
-                  <AvatarContainer $src={user.avatarKey}>
-                    {!user.avatarKey && <UserIcon height={20} width={20} />}
-                  </AvatarContainer>
-                  {user.firstName || user.lastName ? (user.firstName || '') + (user.lastName || '') : 'No name'}
-                </StyledDropdownToggle>
-                <StyledDropdownMenu>
-                  <StyledDropdownItem onClick={() => dispatch(userActions.signOut())}>Sign Out</StyledDropdownItem>
-                </StyledDropdownMenu>
-              </Dropdown>
-            </>
-          )}
-        </UserContainer>
-      </Header>
-      <Main>
-        <PageHeader>
-          <PageTitle>{pageTitle}</PageTitle>
-        </PageHeader>
-        {loading ? <Loader /> : children}
-      </Main>
+      {isLoading ? (
+        <LoaderContainer>
+          <Loader />
+        </LoaderContainer>
+      ) : (
+        <>
+          <Header>
+            <StyledNav>
+              <Link href="/dashboard">
+                <>
+                  <Logo width={46} height={46} />
+                  <LogoTitle>ACCELERIST</LogoTitle>
+                </>
+              </Link>
+              {navItems.map(item => (
+                <Link href={item.src} key={item.id}>
+                  <A $active={router.route === item.src}>{item.title}</A>
+                </Link>
+              ))}
+            </StyledNav>
+            <UserContainer>
+              {isLoading ? (
+                <Loader size={20} />
+              ) : (
+                <>
+                  <Dropdown>
+                    <StyledDropdownToggle id="dropdown-basic">
+                      <AvatarContainer $src={user.avatarKey}>
+                        {!user.avatarKey && <UserIcon height={20} width={20} />}
+                      </AvatarContainer>
+                      {user.firstName || user.lastName ? (user.firstName || '') + (user.lastName || '') : 'No name'}
+                    </StyledDropdownToggle>
+                    <StyledDropdownMenu>
+                      <StyledDropdownItem onClick={() => dispatch(userActions.signOut())}>Sign Out</StyledDropdownItem>
+                    </StyledDropdownMenu>
+                  </Dropdown>
+                </>
+              )}
+            </UserContainer>
+          </Header>
+          <Main>
+            <PageHeader>
+              <PageTitle>{pageTitle}</PageTitle>
+            </PageHeader>
+            {loading ? <Loader /> : children}
+          </Main>
+        </>
+      )}
     </Root>
   );
 };
@@ -119,6 +127,14 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   background: ${colors.lightBlue4};
+`;
+
+const LoaderContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Logo = styled(LogoBlackIcon)`

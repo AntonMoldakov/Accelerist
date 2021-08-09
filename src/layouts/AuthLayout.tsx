@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { LogoIcon } from 'public/icons/components';
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { Loader } from 'ui';
