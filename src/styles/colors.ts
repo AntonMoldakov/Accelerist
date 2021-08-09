@@ -5,6 +5,7 @@ export const colors = {
   lightBlue: '#51c2ee',
   lightBlue2: '#CAF0FF',
   lightBlue3: '#ceedf9',
+  lightBlue4: '#d5f3ff;',
   opacityBlue: '#2baee04d',
   darkBlue: '#122434',
   red: '#f05658',
@@ -14,4 +15,5 @@ export const colors = {
   darkGray: '#737373',
   lightGray: '#f8f8f8',
   lightGray2: '#b4b0bb',
+  lightGray3: '#f9f9f9',
 };

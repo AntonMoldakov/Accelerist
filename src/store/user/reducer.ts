@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signIn, signUp } from './actions';
+import { getCurrentUser, signIn, signUp } from './actions';
 import { IUser } from 'types';
 
 const initialState: IUser = {
@@ -15,14 +15,18 @@ const initialState: IUser = {
   createdAt: '',
   updatedAt: '',
   error: '',
+  firstName: null, 
+  lastName: null,
+  avatarKey: null,
+  deletedAt: null
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    signOut(state) {
-      state = initialState
+    signOut() {
+      return  initialState
     },
   },
   extraReducers: builder => {
@@ -31,6 +35,9 @@ export const userSlice = createSlice({
     });
     builder.addCase(signUp.fulfilled, (state, action) => {
       return state = action.payload
+    });
+    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
+      return {...state , ...action.payload}
     });
     builder.addCase(signIn.rejected, (state, actions) => {
       return { ...state, error: actions.payload as string}

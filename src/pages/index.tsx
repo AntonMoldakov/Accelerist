@@ -1,9 +1,7 @@
+import { useRouter } from 'next/dist/client/router';
+
 export default function Home() {
-  return (
-    <>
-      <section>
-        <h1>Home</h1>
-      </section>
-    </>
-  );
+  const router = useRouter();
+  router.push('/login');
+  return <></>;
 }

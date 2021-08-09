@@ -11,4 +11,8 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   error: string;
+  firstName: null | string;
+  lastName: null | string;
+  avatarKey: string | null;
+  deletedAt: string | null;
 }

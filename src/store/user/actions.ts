@@ -36,3 +36,16 @@ export const resetPassword = createAsyncThunk('user/resetPassword', async (user:
     return rejectWithValue(error.message);
   }
 });
+
+
+export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (undefined, { rejectWithValue }) => {
+  try {
+    const response = await userAPI.getCurrentUser().catch(response => {
+      throw new Error(response.response.data.message);
+    });
+    
+    return { ...response.data, error: '' };
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
