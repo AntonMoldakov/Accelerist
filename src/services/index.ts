@@ -1,4 +1,4 @@
-import { ResponseAuth, ResponseUser } from './types';
+import { getFavoriteCompaniesProps, getProspectsListProps, ResponseAuth, ResponseFavoriteCompanies, ResponseProspectsList, ResponseUser } from './types';
 import api from './httpServices';
 import { ResetPasswordProps, SignInProps, SignUpProps } from 'store/user/types';
 
@@ -16,3 +16,13 @@ export const userAPI = {
     return api.get<ResponseUser>('user');
   },
 };
+
+export const companiesApi = {
+  getProspectsList({ limit = 12, page = 1, sort = 'alphabet' }: getProspectsListProps)  {
+    return api.get<ResponseProspectsList>(`saved-list?limit=${limit}&page=${page}&sort=${sort}`);
+  },
+  getFavoriteCompanies({ limit = 12, page = 1}: getFavoriteCompaniesProps)  {
+    return api.get<ResponseFavoriteCompanies>(`companies/favorites?limit=${limit}&page=${page}`);
+  }
+}
+

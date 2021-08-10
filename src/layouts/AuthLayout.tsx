@@ -12,7 +12,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, loading }) => {
   const router = useRouter();
   const user = useSelector(selectUser);
 
-  if (user.isAuthorized) {
+  if (user.accessToken) {
     router.push('/dashboard');
   }
   return (

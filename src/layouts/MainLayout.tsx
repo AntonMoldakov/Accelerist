@@ -32,7 +32,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, headTitle, p
     dispatch(getCurrentUser()).finally(() => setLoading(false));
   }, []);
 
-  if (!user.isAuthorized) {
+  if (!user || !user.accessToken) {
     router.push('/login');
   }
   return (

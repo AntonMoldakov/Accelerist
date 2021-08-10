@@ -12,6 +12,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+p {
+  margin: 0;
+}
 
 * {
   box-sizing: border-box;
