@@ -1,6 +1,8 @@
 export { default as LogoIcon } from './LogoIcon'
 export { default as StrokeIcon } from './StrokeIcon'
+export { default as CompanyAvatarIcon } from './CompanyAvatarIcon'
 export { default as EyeIcon } from './EyeIcon'
 export { default as EyeOffIcon } from './EyeOffIcon'
+export { default as HeartIcon } from './HeartIcon'
 export { default as LogoBlackIcon } from './LogoBlackIcon'
 export { default as UserIcon } from './UserIcon'

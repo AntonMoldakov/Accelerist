@@ -7,12 +7,12 @@ import { colors } from 'styles/colors';
 
 const Prospect = ({ prospect }: ProspectProps) => {
   const date = moment(prospect.updatedAt).format('DD MMM YY');
-  console.log(prospect.id);
+
   return (
     <Root>
       <Header>
         <Link href={'/prospects/' + prospect.id}>
-          <Title>{prospect.name}</Title>
+          <Title>{prospect.name ? prospect.name : 'No Name'}</Title>
         </Link>
       </Header>
       <Section>
@@ -29,10 +29,10 @@ const Prospect = ({ prospect }: ProspectProps) => {
         </Ul>
       </Section>
       <Main>
-        <MainLayout>
+        <MainWrapper>
           <SectionTitle>№ of Prospects Available</SectionTitle>
           <MainText>{prospect.prospectsAvailable}</MainText>
-        </MainLayout>
+        </MainWrapper>
       </Main>
       <Footer>
         <UserBlock>
@@ -154,7 +154,7 @@ const FooterText = styled.p`
   margin-bottom: 4px;
 `;
 
-const MainLayout = styled.div`
+const MainWrapper = styled.div`
   width: 100%;
   background: ${colors.lightGray3};
   border-radius: 4px;

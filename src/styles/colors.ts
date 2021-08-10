@@ -5,7 +5,7 @@ export const colors = {
   lightBlue: '#51c2ee',
   lightBlue2: '#CAF0FF',
   lightBlue3: '#ceedf9',
-  lightBlue4: '#d5f3ff;',
+  lightBlue4: '#d5f3ff',
   opacityBlue: '#2baee04d',
   darkBlue: '#122434',
   red: '#f05658',

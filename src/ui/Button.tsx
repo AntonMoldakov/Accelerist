@@ -16,12 +16,12 @@ export default Button;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   Icon?: JSX.Element;
-  theme?: 'primary' | 'secondary';
+  theme?: 'primary' | 'secondary' | 'third';
   isLoading?: boolean;
 }
 
 interface StyledButtonProps {
-  $theme: 'primary' | 'secondary';
+  $theme: 'primary' | 'secondary' | 'third';
 }
 
 const StyledButtonPrimaryCSS = css`
@@ -38,6 +38,22 @@ const StyledButtonPrimaryCSS = css`
     border-color: ${colors.lightBlue3};
     color: ${colors.opacityBlue};
     cursor: no-drop;
+  }
+`;
+
+const StyledButtonThirdCSS = css`
+  padding: 0;
+  font-size: 12px;
+  line-height: 150%;
+  font-weight: 400;
+  color: ${colors.black};
+  height: 36px;
+  border: 1px solid ${colors.blue};
+  background-color: ${colors.white};
+  max-width: 244px;
+  &:hover {
+    background-color: ${colors.opacityBlue};
+    color: ${colors.blue};
   }
 `;
 
@@ -66,9 +82,16 @@ const StyledButton = styled.button<StyledButtonProps>`
   font-size: 16px;
   cursor: pointer;
   border-radius: 6px;
+  transition: all 0.2s linear;
   &:focus {
     outline: none;
   }
   ${({ $theme }) =>
-    $theme === 'primary' ? StyledButtonPrimaryCSS : $theme === 'secondary' ? StyledButtonSecondaryCSS : ''}
+    $theme === 'primary'
+      ? StyledButtonPrimaryCSS
+      : $theme === 'secondary'
+      ? StyledButtonSecondaryCSS
+      : $theme === 'third'
+      ? StyledButtonThirdCSS
+      : ''}
 `;

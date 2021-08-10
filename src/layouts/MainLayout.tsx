@@ -21,7 +21,7 @@ const navItems = [
   },
 ];
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, headTitle, pageTitle }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, title }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, headTitle, p
   return (
     <Root>
       <Head>
-        <title>{headTitle}</title>
+        <title>{title}</title>
       </Head>
       {isLoading ? (
         <LoaderContainer>
@@ -82,7 +82,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, headTitle, p
           </Header>
           <Main>
             <PageHeader>
-              <PageTitle>{pageTitle}</PageTitle>
+              <PageTitle>{title}</PageTitle>
             </PageHeader>
             {loading ? <Loader /> : children}
           </Main>
@@ -96,8 +96,7 @@ export default MainLayout;
 
 interface MainLayoutProps {
   loading?: boolean;
-  headTitle: string;
-  pageTitle: string;
+  title: string;
 }
 
 interface AProps {

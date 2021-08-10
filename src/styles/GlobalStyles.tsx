@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { colors } from './colors';
 
 export const GlobalStyles = createGlobalStyle`
 html,
@@ -9,11 +10,15 @@ body {
     Droid Sans, Helvetica Neue, sans-serif;
 }
 a {
-  color: inherit;
+  color: ${colors.black};
   text-decoration: none;
 }
 p {
   margin: 0;
+}
+ 
+h1,h2,h3,h4,h5,h6 {
+  margin: 0; 
 }
 
 * {
