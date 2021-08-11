@@ -35,6 +35,13 @@ export interface IProspect {
 
 export interface ResponseProspectsList {
   items: Array<IProspect>;
+  meta: {
+    currentPage: string;
+    itemCount: number;
+    itemsPerPage: string;
+    totalItems: number;
+    totalPages: number;
+  };
 }
 
 export interface ICompany {
