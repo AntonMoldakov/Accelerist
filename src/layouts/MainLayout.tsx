@@ -84,7 +84,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, loading, title }) => 
             <PageHeader>
               <PageTitle>{title}</PageTitle>
             </PageHeader>
-            {loading ? <Loader /> : children}
+            {loading ? <Loader /> : <MainWrapper>{children}</MainWrapper>}
           </Main>
         </>
       )}
@@ -115,6 +115,13 @@ const Root = styled.div`
   grid-template-areas:
     'hd hd'
     'content content';
+`;
+
+const MainWrapper = styled.div`
+  width: 100%;
+  max-width: 1320px;
+  margin: 0px auto;
+  padding: 32px 20px 20px;
 `;
 
 const Header = styled.header`

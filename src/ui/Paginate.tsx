@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 const Paginate = ({ currentPage, totalItemsCount, pageSize, ...paginateProps }: PaginateProps) => {
   const breakLabel =
-    currentPage +
     pageSize * (currentPage - 1) +
+    1 +
     '-' +
     (pageSize * currentPage > totalItemsCount ? totalItemsCount : pageSize * currentPage) +
     ' of ' +
@@ -15,17 +15,20 @@ const Paginate = ({ currentPage, totalItemsCount, pageSize, ...paginateProps }: 
       {totalItemsCount <= pageSize ? (
         <PaginateText> {breakLabel}</PaginateText>
       ) : (
-        <ReactPaginate
-          breakLabel={breakLabel}
-          previousClassName="previous"
-          nextClassName="next"
-          containerClassName="container"
-          previousLabel={'<'}
-          nextLabel={'>'}
-          {...paginateProps}
-          marginPagesDisplayed={0}
-          pageRangeDisplayed={0}
-        />
+        <>
+          <ReactPaginate
+            breakLabel={breakLabel}
+            previousClassName="previous"
+            nextClassName="next"
+            containerClassName="container"
+            previousLabel={'<'}
+            nextLabel={'>'}
+            {...paginateProps}
+            marginPagesDisplayed={0}
+            pageRangeDisplayed={0}
+          />
+          {currentPage === paginateProps.pageCount && <PaginateText> {breakLabel}</PaginateText>}
+        </>
       )}
     </StyledPaginateContainer>
   );
@@ -45,6 +48,8 @@ const PaginateText = styled.div`
   line-height: 150%;
 `;
 const StyledPaginateContainer = styled.div`
+  display: flex;
+  align-items: center;
   .container {
     display: flex;
     flex-direction: row;

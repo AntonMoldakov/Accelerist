@@ -30,9 +30,19 @@ const ButtonPrimaryCSS = css`
 `;
 
 const ButtonSecondaryCSS = css`
-  height: 46px;
-  background-color: ${colors.white};
+  height: 40px;
+  width: 40px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
   border: 1px solid ${colors.gray};
+  transition: color 0.2s linear;
+  &:hover {
+    border-color: ${colors.red};
+  }
   &:focus {
     outline: none;
   }

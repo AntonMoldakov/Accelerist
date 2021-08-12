@@ -1,1 +1,1 @@
-export {default as FavoriteCompany } from './FavoriteCompany'
+export {default as FavoriteCompany} from './FavoriteCompany'

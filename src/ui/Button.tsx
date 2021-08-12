@@ -46,8 +46,8 @@ const StyledButtonThirdCSS = css`
   font-size: 12px;
   line-height: 150%;
   font-weight: 400;
-  color: ${colors.black};
-  height: 36px;
+  color: ${colors.blue};
+  height: 40px;
   border: 1px solid ${colors.blue};
   background-color: ${colors.white};
   max-width: 244px;

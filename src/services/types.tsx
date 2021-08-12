@@ -33,15 +33,16 @@ export interface IProspect {
   updatedAt: string;
 }
 
+export interface ResponseMeta {
+  currentPage: string;
+  itemCount: number;
+  itemsPerPage: string;
+  totalItems: number;
+  totalPages: number;
+}
 export interface ResponseProspectsList {
   items: Array<IProspect>;
-  meta: {
-    currentPage: string;
-    itemCount: number;
-    itemsPerPage: string;
-    totalItems: number;
-    totalPages: number;
-  };
+  meta: ResponseMeta;
 }
 
 export interface ICompany {
@@ -110,6 +111,7 @@ export interface ICompany {
 
 export interface ResponseFavoriteCompanies {
   items: Array<ICompany>;
+  meta: ResponseMeta;
 }
 
 export interface ResponseTeam {

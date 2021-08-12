@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Prospect } from 'components';
+import { PAGE_SIZE } from 'const';
 import MainLayout from 'layouts/MainLayout';
 import { InferGetServerSidePropsType } from 'next';
 import { Router, useRouter } from 'next/dist/client/router';
@@ -9,8 +10,6 @@ import { wrapper } from 'store';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 import { Paginate } from 'ui';
-
-const PAGE_SIZE = 12;
 
 const ulItems = [
   {
@@ -68,40 +67,35 @@ const Prospects = ({ prospectsList, prospectsMeta }: InferGetServerSidePropsType
 
   return (
     <MainLayout title={'Prospects'} loading={isLoading}>
-      <Root>
-        <Header>
-          <Filters>
-            <p>Sort by</p>
-            <ul>
-              {ulItems.map(item => (
-                <Li
-                  key={item.id}
-                  $isActive={currentQuery.sort === item.value}
-                  onClick={() => handleFilters(item.value)}>
-                  {item.title}
-                </Li>
-              ))}
-            </ul>
-          </Filters>
-          <div>
-            <Paginate
-              currentPage={+prospectsMeta.currentPage}
-              totalItemsCount={prospectsMeta.totalItems}
-              pageSize={PAGE_SIZE}
-              initialPage={+prospectsMeta.currentPage - 1}
-              pageCount={pageCount}
-              onPageChange={handlePagination}
-            />
-          </div>
-        </Header>
-        <Section>
-          <SectionBody>
-            {prospectsList.map(item => {
-              return <Prospect prospect={item} key={item.id} />;
-            })}
-          </SectionBody>
-        </Section>
-      </Root>
+      <Header>
+        <Filters>
+          <p>Sort by</p>
+          <ul>
+            {ulItems.map(item => (
+              <Li key={item.id} $isActive={currentQuery.sort === item.value} onClick={() => handleFilters(item.value)}>
+                {item.title}
+              </Li>
+            ))}
+          </ul>
+        </Filters>
+        <div>
+          <Paginate
+            currentPage={+prospectsMeta.currentPage}
+            totalItemsCount={prospectsMeta.totalItems}
+            pageSize={PAGE_SIZE}
+            forcePage={+prospectsMeta.currentPage - 1}
+            pageCount={pageCount}
+            onPageChange={handlePagination}
+          />
+        </div>
+      </Header>
+      <Main>
+        <MainWrapper>
+          {prospectsList.map(item => {
+            return <Prospect prospect={item} key={item.id} />;
+          })}
+        </MainWrapper>
+      </Main>
     </MainLayout>
   );
 };
@@ -140,13 +134,6 @@ interface pagginationHandlerProps {
 interface LiProps {
   $isActive: boolean;
 }
-
-const Root = styled.div`
-  width: 100%;
-  max-width: 1320px;
-  margin: 0px auto;
-  padding: 32px 20px 20px;
-`;
 
 const Header = styled.header`
   display: flex;
@@ -187,12 +174,12 @@ const Li = styled.li<LiProps>`
     }
   }
 `;
-const Section = styled.section`
+const Main = styled.main`
   max-width: 1096px;
   margin-bottom: 40px;
 `;
 
-const SectionBody = styled.div`
+const MainWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;

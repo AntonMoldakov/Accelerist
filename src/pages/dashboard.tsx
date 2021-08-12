@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FavoriteCompany, Prospect } from 'components';
+import { FavoriteCompanyPrewiev, Prospect } from 'components';
 import MainLayout from 'layouts/MainLayout';
 import moment from 'moment';
 import { InferGetServerSidePropsType } from 'next';
@@ -22,96 +22,94 @@ const Dashboard = ({
   const router = useRouter();
   return (
     <MainLayout title={'Dashboard'}>
-      <Root>
-        <Section $theme="full">
+      <Section $theme="full">
+        <SectionHeader>
+          <SectionTitle>Prospecting Sessions</SectionTitle>
+          <Link href="/prospects">
+            <A>see more</A>
+          </Link>
+        </SectionHeader>
+        <SectionBody>
+          {prospectsList.slice(1).map(item => {
+            return <Prospect prospect={item} key={item.id} />;
+          })}
+        </SectionBody>
+      </Section>
+
+      <SectionContainer>
+        <Section $theme="half">
           <SectionHeader>
-            <SectionTitle>Prospecting Sessions</SectionTitle>
-            <Link href="/prospects">
-              <A>see more</A>
-            </Link>
+            <SectionTitle>Favorites</SectionTitle>
+            {favoriteCompanies && favoriteCompanies.length > 0 && (
+              <Link href="/company-favorites">
+                <A>see more</A>
+              </Link>
+            )}
           </SectionHeader>
           <SectionBody>
-            {prospectsList.slice(1).map(item => {
-              return <Prospect prospect={item} key={item.id} />;
-            })}
+            {favoriteCompanies && favoriteCompanies.length > 0 ? (
+              favoriteCompanies.map(item => {
+                return <FavoriteCompanyPrewiev company={item} key={item.id} />;
+              })
+            ) : (
+              <Favorites>
+                <HeartIcon width={95} height={86} />
+                <FavoritesTitle>No favorite company</FavoritesTitle>
+                <FavoritesSubtitle>Go to the search page and add to favorites</FavoritesSubtitle>
+                <Button onClick={() => router.push('/search')} theme="third">
+                  Go to Prospecting
+                </Button>
+              </Favorites>
+            )}
           </SectionBody>
         </Section>
-
-        <SectionContainer>
-          <Section $theme="half">
-            <SectionHeader>
-              <SectionTitle>Favorites</SectionTitle>
-              {favoriteCompanies && favoriteCompanies.length > 0 && (
-                <Link href="/company-favorites">
-                  <A>see more</A>
-                </Link>
-              )}
-            </SectionHeader>
-            <SectionBody>
-              {favoriteCompanies && favoriteCompanies.length > 0 ? (
-                favoriteCompanies.map(item => {
-                  return <FavoriteCompany company={item} key={item.id} />;
-                })
-              ) : (
-                <Favorites>
-                  <HeartIcon width={95} height={86} />
-                  <FavoritesTitle>No favorite company</FavoritesTitle>
-                  <FavoritesSubtitle>Go to the search page and add to favorites</FavoritesSubtitle>
-                  <Button onClick={() => router.push('/search')} theme="third">
-                    Go to Prospecting
-                  </Button>
-                </Favorites>
-              )}
-            </SectionBody>
-          </Section>
-          <Section $theme="half">
-            <SectionHeader>
-              <SectionTitle>Reports</SectionTitle>
-            </SectionHeader>
-            <Reports>
-              <ReportsHeader>
-                <ReportsData>
-                  <ReportsTitle>Search Sessions</ReportsTitle>
-                  <ReportsDataBody>
-                    <ReportsDataTitle>Total</ReportsDataTitle>
-                    <ReportsDataText>{team.searchCount}</ReportsDataText>
-                  </ReportsDataBody>
-                </ReportsData>
-                <ReportsData>
-                  <ReportsTitle>Sent Pitches</ReportsTitle>
-                  <ReportsDataBody>
-                    <ReportsDataTitle>Company</ReportsDataTitle>
-                    <ReportsDataText>{team.pitchCount}</ReportsDataText>
-                  </ReportsDataBody>
-                </ReportsData>
-              </ReportsHeader>
-              <ReportsTitle>Prospect Navigator</ReportsTitle>
-              <ReportsBodyLink href="http://accelerist.com/insights-2/">Go to page</ReportsBodyLink>
-              <ReportsTitle>Last Login</ReportsTitle>
-              <div>
-                {lastLoginsList &&
-                  lastLoginsList.map(item => (
-                    <User key={item.id}>
-                      <AvatarContainer $src={item.user.avatarKey}>
-                        {!item.user.avatarKey && <UserIcon height={20} width={20} />}
-                      </AvatarContainer>
-                      <UserBody>
-                        <div>
-                          {item.user.firstName || item.user.lastName
-                            ? (item.user.firstName || '') + (item.user.lastName || '')
-                            : 'No name'}
-                        </div>
-                        <div>
-                          <span>{moment(item.loggedInAt).format('DD MMM YY')}</span>
-                        </div>
-                      </UserBody>
-                    </User>
-                  ))}
-              </div>
-            </Reports>
-          </Section>
-        </SectionContainer>
-      </Root>
+        <Section $theme="half">
+          <SectionHeader>
+            <SectionTitle>Reports</SectionTitle>
+          </SectionHeader>
+          <Reports>
+            <ReportsHeader>
+              <ReportsData>
+                <ReportsTitle>Search Sessions</ReportsTitle>
+                <ReportsDataBody>
+                  <ReportsDataTitle>Total</ReportsDataTitle>
+                  <ReportsDataText>{team.searchCount}</ReportsDataText>
+                </ReportsDataBody>
+              </ReportsData>
+              <ReportsData>
+                <ReportsTitle>Sent Pitches</ReportsTitle>
+                <ReportsDataBody>
+                  <ReportsDataTitle>Company</ReportsDataTitle>
+                  <ReportsDataText>{team.pitchCount}</ReportsDataText>
+                </ReportsDataBody>
+              </ReportsData>
+            </ReportsHeader>
+            <ReportsTitle>Prospect Navigator</ReportsTitle>
+            <ReportsBodyLink href="http://accelerist.com/insights-2/">Go to page</ReportsBodyLink>
+            <ReportsTitle>Last Login</ReportsTitle>
+            <div>
+              {lastLoginsList &&
+                lastLoginsList.map(item => (
+                  <User key={item.id}>
+                    <AvatarContainer $src={item.user.avatarKey}>
+                      {!item.user.avatarKey && <UserIcon height={20} width={20} />}
+                    </AvatarContainer>
+                    <UserBody>
+                      <div>
+                        {item.user.firstName || item.user.lastName
+                          ? (item.user.firstName || '') + (item.user.lastName || '')
+                          : 'No name'}
+                      </div>
+                      <div>
+                        <span>{moment(item.loggedInAt).format('DD MMM YY')}</span>
+                      </div>
+                    </UserBody>
+                  </User>
+                ))}
+            </div>
+          </Reports>
+        </Section>
+      </SectionContainer>
     </MainLayout>
   );
 };
@@ -156,13 +154,6 @@ interface SectionProps {
 interface AvatarProps {
   $src: string | null;
 }
-
-const Root = styled.div`
-  width: 100%;
-  max-width: 1320px;
-  margin: 0px auto;
-  padding: 32px 20px 20px;
-`;
 
 const HalfSectionCSS = css`
   max-width: 536px;

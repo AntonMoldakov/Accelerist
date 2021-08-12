@@ -16,3 +16,12 @@ export const userAPI = {
     return api.get<ResponseUser>('user');
   },
 };
+
+export const favoritingAPI = {
+  likeCompany(id: string) {
+    return api.get<ResponseUser>(`companies/${id}/like`);
+  },
+  dislikeCompany(id: string) {
+    return api.get<ResponseUser>(`companies/${id}/dislike`);
+  },
+}
