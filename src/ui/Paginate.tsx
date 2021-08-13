@@ -11,26 +11,32 @@ const Paginate = ({ currentPage, totalItemsCount, pageSize, ...paginateProps }: 
     ' of ' +
     totalItemsCount;
   return (
-    <StyledPaginateContainer>
-      {totalItemsCount <= pageSize ? (
-        <PaginateText> {breakLabel}</PaginateText>
+    <>
+      {!totalItemsCount ? (
+        <div />
       ) : (
-        <>
-          <ReactPaginate
-            breakLabel={breakLabel}
-            previousClassName="previous"
-            nextClassName="next"
-            containerClassName="container"
-            previousLabel={'<'}
-            nextLabel={'>'}
-            {...paginateProps}
-            marginPagesDisplayed={0}
-            pageRangeDisplayed={0}
-          />
-          {currentPage === paginateProps.pageCount && <PaginateText> {breakLabel}</PaginateText>}
-        </>
+        <StyledPaginateContainer>
+          {totalItemsCount <= pageSize ? (
+            <PaginateText> {breakLabel}</PaginateText>
+          ) : (
+            <>
+              <ReactPaginate
+                breakLabel={breakLabel}
+                previousClassName="previous"
+                nextClassName="next"
+                containerClassName="container"
+                previousLabel={'<'}
+                nextLabel={'>'}
+                {...paginateProps}
+                marginPagesDisplayed={0}
+                pageRangeDisplayed={0}
+              />
+              {currentPage === paginateProps.pageCount && <PaginateText> {breakLabel}</PaginateText>}
+            </>
+          )}
+        </StyledPaginateContainer>
       )}
-    </StyledPaginateContainer>
+    </>
   );
 };
 

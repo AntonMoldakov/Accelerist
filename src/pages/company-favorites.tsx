@@ -1,37 +1,34 @@
 import MainLayout from 'layouts/MainLayout';
-import { ResponseFavoriteCompanies } from 'services/types';
-import axios from 'axios';
-import { FavoriteCompany } from 'components';
-import { InferGetServerSidePropsType } from 'next';
-import { Router, useRouter } from 'next/dist/client/router';
+import { Company, NoFavoriteMessage } from 'components';
+import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
-import { wrapper } from 'store';
+import { useAppDispatch } from 'store';
 import styled from 'styled-components';
 import { Paginate } from 'ui';
 import { PAGE_SIZE } from 'const';
+import { getFavoriteCompanies } from 'store/companies/action';
+import { useSelector } from 'react-redux';
+import { selectFavoriteCompanies, selectFavoriteCompaniesMeta } from 'store/companies/selectors';
 
-const FavoritesCompany = ({ companyList, companyMeta }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const FavoritesCompany = () => {
   const [isLoading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const companyList = useSelector(selectFavoriteCompanies);
+  const companyMeta = useSelector(selectFavoriteCompaniesMeta);
   const router = useRouter();
-
   const pageCount = Math.ceil(companyMeta.totalItems / +companyMeta.itemsPerPage);
 
-  const startLoading = () => setLoading(true);
-  const stopLoading = () => setLoading(false);
+  const currentPath = router.pathname;
+  const currentQuery = router.query;
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', startLoading);
-    Router.events.on('routeChangeComplete', stopLoading);
-
-    return () => {
-      Router.events.off('routeChangeStart', startLoading);
-      Router.events.off('routeChangeComplete', stopLoading);
-    };
-  }, []);
+    setLoading(true);
+    dispatch(getFavoriteCompanies((currentQuery.page as string) || '1')).finally(() => {
+      setLoading(false);
+    });
+  }, [currentQuery.page, companyList.length]);
 
   const handlePagination = (page: pagginationHandlerProps) => {
-    const currentPath = router.pathname;
-    const currentQuery = router.query;
     currentQuery.page = page.selected + 1 + '';
 
     router.push({
@@ -39,6 +36,7 @@ const FavoritesCompany = ({ companyList, companyMeta }: InferGetServerSidePropsT
       query: currentQuery,
     });
   };
+
   return (
     <MainLayout title={'Favorites'} loading={isLoading}>
       <Header>
@@ -54,9 +52,15 @@ const FavoritesCompany = ({ companyList, companyMeta }: InferGetServerSidePropsT
       </Header>
       <Main>
         <MainWrapper>
-          {companyList.map(item => {
-            return <FavoriteCompany company={item} key={item.id} />;
-          })}
+          {companyList.length > 0 ? (
+            companyList.map(item => {
+              return <Company company={item} key={item.id} />;
+            })
+          ) : (
+            <NoFavoriteMessageContainer>
+              <NoFavoriteMessage />
+            </NoFavoriteMessageContainer>
+          )}
         </MainWrapper>
       </Main>
     </MainLayout>
@@ -68,30 +72,6 @@ export default FavoritesCompany;
 interface pagginationHandlerProps {
   selected: number;
 }
-
-export const getServerSideProps = wrapper.getServerSideProps(() => async ({ req, query }) => {
-  const page = (query.page as string) || '1';
-  const token = req.cookies.accessToken;
-
-  const basePath = 'https://accelerist.herokuapp.com/api/v1/';
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-
-  const prospectsResponse = await axios
-    .get<ResponseFavoriteCompanies>(basePath + `companies/favorites?limit=${PAGE_SIZE}&page=${page}`, config)
-    .then(response => response.data);
-
-  const companyList = prospectsResponse.items;
-  const companyMeta = prospectsResponse.meta;
-
-  return {
-    props: {
-      companyList,
-      companyMeta,
-    },
-  };
-});
 
 const Header = styled.header`
   display: flex;
@@ -114,4 +94,9 @@ const MainWrapper = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   margin: -12px -12px 0px;
+`;
+
+const NoFavoriteMessageContainer = styled.div`
+  height: 70vh;
+  width: 100%;
 `;

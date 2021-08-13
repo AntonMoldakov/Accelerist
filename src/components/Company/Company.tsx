@@ -7,10 +7,13 @@ import { colors } from 'styles/colors';
 import { Button, IconButton } from 'ui';
 import { useRouter } from 'next/dist/client/router';
 import regulars from 'utils/regulars';
-import { favoritingAPI } from 'services';
+import { dislikeCompany, likeCompany } from 'store/companies/action';
+import { useAppDispatch } from 'store';
+import { toastr } from 'react-redux-toastr';
 
-const FavoriteCompany = ({ company }: FavoriteCompanyProps) => {
+const Company = ({ company }: FavoriteCompanyProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const matcher = (str: string, reg: RegExp) => {
     return str.match(reg) || [];
@@ -23,9 +26,11 @@ const FavoriteCompany = ({ company }: FavoriteCompanyProps) => {
 
   const handleFavorite = () => {
     if (company.like) {
-      favoritingAPI.dislikeCompany(company.id);
+      dispatch(dislikeCompany(company.id));
+      toastr.success('Well Done', 'Company successfully like');
     } else {
-      favoritingAPI.likeCompany(company.id);
+      dispatch(likeCompany(company.id));
+      toastr.success('Well Done', 'Company successfully dislike');
     }
   };
 
@@ -40,7 +45,7 @@ const FavoriteCompany = ({ company }: FavoriteCompanyProps) => {
           <p>4</p>
         </CompanyAvatarFooter>
       </CompanyAvatarContainer>
-      <Company>
+      <CompanyWrapper>
         <CompanyMain>
           <Link href={'/company/' + company.id}>
             <A>{company.name}</A>
@@ -75,12 +80,12 @@ const FavoriteCompany = ({ company }: FavoriteCompanyProps) => {
             Profile
           </Button>
         </ButtonContainer>
-      </Company>
+      </CompanyWrapper>
     </Section>
   );
 };
 
-export default FavoriteCompany;
+export default Company;
 
 interface FavoriteCompanyProps {
   company: ICompany;
@@ -161,7 +166,7 @@ const CompanyMain = styled.div`
   min-height: 100px;
 `;
 
-const Company = styled.div`
+const CompanyWrapper = styled.div`
   width: 100%;
 `;
 

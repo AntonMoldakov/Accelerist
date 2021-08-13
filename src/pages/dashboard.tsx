@@ -1,17 +1,16 @@
 import axios from 'axios';
-import { FavoriteCompanyPrewiev, Prospect } from 'components';
+import { CompanyPrewiev, Prospect, NoFavoriteMessage } from 'components';
 import MainLayout from 'layouts/MainLayout';
 import moment from 'moment';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
-import { HeartIcon, UserIcon } from 'public/icons/components';
+import { UserIcon } from 'public/icons/components';
 import React from 'react';
 import { ResponseFavoriteCompanies, ResponseLoginsList, ResponseProspectsList, ResponseTeam } from 'services/types';
 import { wrapper } from 'store';
 import styled, { css } from 'styled-components';
 import { colors } from 'styles/colors';
-import { Button } from 'ui';
 
 const Dashboard = ({
   prospectsList,
@@ -49,17 +48,12 @@ const Dashboard = ({
           <SectionBody>
             {favoriteCompanies && favoriteCompanies.length > 0 ? (
               favoriteCompanies.map(item => {
-                return <FavoriteCompanyPrewiev company={item} key={item.id} />;
+                return <CompanyPrewiev company={item} key={item.id} />;
               })
             ) : (
-              <Favorites>
-                <HeartIcon width={95} height={86} />
-                <FavoritesTitle>No favorite company</FavoritesTitle>
-                <FavoritesSubtitle>Go to the search page and add to favorites</FavoritesSubtitle>
-                <Button onClick={() => router.push('/search')} theme="third">
-                  Go to Prospecting
-                </Button>
-              </Favorites>
+              <FavoriteMessageContainer>
+                <NoFavoriteMessage />
+              </FavoriteMessageContainer>
             )}
           </SectionBody>
         </Section>
@@ -215,32 +209,6 @@ const AvatarContainer = styled.div<AvatarProps>`
   justify-content: center;
 `;
 
-const Favorites = styled.section`
-  width: 536px;
-  min-height: 516px;
-  background: ${colors.white};
-  border-radius: 6px;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column;
-`;
-
-const FavoritesTitle = styled.h4`
-  margin: 40px 0 8px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 145%;
-`;
-
-const FavoritesSubtitle = styled.p`
-  font-size: 12px;
-  line-height: 150%;
-  color: ${colors.gray2};
-  margin-bottom: 32px;
-`;
-
 const Reports = styled.section`
   width: 536px;
   min-height: 516px;
@@ -264,6 +232,12 @@ const ReportsHeader = styled.div`
 
 const ReportsData = styled.div`
   width: calc(50% - 9px);
+`;
+
+const FavoriteMessageContainer = styled.div`
+  width: 536px;
+  height: 516px;
+  padding-top: 12px;
 `;
 
 const ReportsBodyLink = styled.a`

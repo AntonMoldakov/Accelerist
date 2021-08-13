@@ -5,7 +5,7 @@ import { ICompany } from 'services/types';
 import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
-const FavoriteCompanyPrewiev = ({ company }: FavoriteCompanyProps) => {
+const CompanyPrewiev = ({ company }: FavoriteCompanyProps) => {
   return (
     <Root>
       <SectionBody>
@@ -27,7 +27,7 @@ const FavoriteCompanyPrewiev = ({ company }: FavoriteCompanyProps) => {
   );
 };
 
-export default FavoriteCompanyPrewiev;
+export default CompanyPrewiev;
 
 interface FavoriteCompanyProps {
   company: ICompany;

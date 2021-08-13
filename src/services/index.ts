@@ -1,6 +1,7 @@
-import { ResponseAuth, ResponseUser } from './types';
+import { ResponseAuth, ResponseFavoriteCompanies, ResponseUser } from './types';
 import api from './httpServices';
 import { ResetPasswordProps, SignInProps, SignUpProps } from 'store/user/types';
+import { PAGE_SIZE } from 'const';
 
 export const userAPI = {
   signIn(data: SignInProps) {
@@ -17,11 +18,14 @@ export const userAPI = {
   },
 };
 
-export const favoritingAPI = {
+export const companiesAPI = {
+  getFavoriteCompanies(page: string) {
+    return api.get<ResponseFavoriteCompanies>(`companies/favorites?limit=${PAGE_SIZE}&page=${page}`);
+  },
   likeCompany(id: string) {
-    return api.get<ResponseUser>(`companies/${id}/like`);
+    return api.get<boolean>(`companies/${id}/like`);
   },
   dislikeCompany(id: string) {
-    return api.get<ResponseUser>(`companies/${id}/dislike`);
+    return api.get<boolean>(`companies/${id}/dislike`);
   },
 }
